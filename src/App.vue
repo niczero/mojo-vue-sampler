@@ -83,7 +83,7 @@
         this.currentStatus = STATUS_SAVING;
 
         upload(formData)
-          .then(wait(1500)) // DEV ONLY: wait for 1.5s 
+          .then(wait(1500)) // DEV ONLY: wait for 1.5s
           .then(x => {
             this.uploadedFiles = [].concat(x);
             this.currentStatus = STATUS_SUCCESS;
@@ -134,7 +134,7 @@
     padding: 20px;
     position: relative;
   }
-  
+
   .input-file {
     cursor: pointer;
     height: 100%;
@@ -143,11 +143,11 @@
     position: absolute;
     width: 100%;
   }
-  
+
   .dropbox:hover {
     background: lightblue;
   }
-  
+
   .dropbox p {
     font-size: 1.2em;
     text-align: center;
