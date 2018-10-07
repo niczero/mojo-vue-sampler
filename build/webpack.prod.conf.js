@@ -1,13 +1,17 @@
 var path = require('path')
+var utils = require('./utils')
 var webpack = require('webpack')
+var config = require('./config')
+var HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  entry: './src/main.js',
-  output: {
-    path: path.resolve(__dirname, './dist'),
-    publicPath: '/dist/',
-    filename: 'build.js'
+  devServer: {
+    historyApiFallback: true,
+    noInfo: true,
+    overlay: true
   },
+  devtool: '#eval-source-map',
+  entry: './src/main.js',
   module: {
     rules: [
       {
@@ -38,9 +42,10 @@ module.exports = {
         loader: 'vue-loader',
         options: {
           loaders: {
-            // Since sass-loader (weirdly) has SCSS as its default parse mode, we map
-            // the "scss" and "sass" values for the lang attribute to the right configs here.
-            // other preprocessors should work out of the box, no loader config like this necessary.
+            // Since sass-loader (weirdly) has SCSS as its default parse mode,
+            // we map the 'scss' and 'sass' values for the lang attribute to the
+            // right configs here.  Other preprocessors should work out of the
+            // box, no loader config like this necessary.
             'scss': [
               'vue-style-loader',
               'css-loader',
@@ -69,21 +74,20 @@ module.exports = {
       }
     ]
   },
+  output: {
+    chunkFilename: utils.assetsPath('js/[id].[chunkhash].js'),
+    filename: utils.assetsPath('js/[name].[chunkhash].js'),
+    path: path.resolve(__dirname, '../public')
+  },
+  performance: {
+    hints: false
+  },
   resolve: {
     alias: {
       'vue$': 'vue/dist/vue.esm.js'
     },
     extensions: ['*', '.js', '.vue', '.json']
-  },
-  devServer: {
-    historyApiFallback: true,
-    noInfo: true,
-    overlay: true
-  },
-  performance: {
-    hints: false
-  },
-  devtool: '#eval-source-map'
+  }
 }
 
 if (process.env.NODE_ENV === 'production') {
@@ -103,6 +107,23 @@ if (process.env.NODE_ENV === 'production') {
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true
+    }),
+    // generate public index.html with correct asset hash for caching.
+    // you can customize output by editing src/index.html
+    // see https://github.com/ampedandwired/html-webpack-plugin
+    new HtmlWebpackPlugin({
+      filename: config.build.index,
+      template: 'src/index.html',
+      inject: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true
+        // more options:
+        // https://github.com/kangax/html-minifier#options-quick-reference
+      },
+      // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+      chunksSortMode: 'dependency'
     })
   ])
 }
