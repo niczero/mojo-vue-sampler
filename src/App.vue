@@ -22,8 +22,8 @@
           <a href="javascript:void(0)" @click="reset()">Upload again</a>
         </p>
         <ul class="list-unstyled">
-          <li v-for="item in uploadedFiles">
-            <img :src="item.url" v-bind:key="item.url" :value="item.url" class="img-responsive img-thumbnail" :alt="item.originalName">
+          <li v-for="item in uploadedFiles" :key="item.url" :value="item.url">
+            <img :src="item.url" class="img-responsive img-thumbnail" :alt="item.originalName">
           </li>
         </ul>
       </div>

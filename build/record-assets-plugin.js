@@ -17,16 +17,16 @@ RecordAssetsPlugin.prototype.apply = function (compiler) {
 
   compiler.plugin('after-emit', function (compilation, callback) {
     let stats = compilation.getStats().toJson()
-    let scripts = '';
-    let styles = '';
+    let scripts = ''
+    let styles = ''
 
     stats.assets.forEach(function (assetInfo) {
       let name = assetInfo.name
       if (name.length >= 3 && name.slice(-3) === '.js') {
-        scripts += '<script src="/'+ assetInfo.name +'">' +"\n"
+        scripts += '<script src="/' + assetInfo.name + '">\n'
       }
       else if (name.length >= 4 && name.slice(-4) === '.css') {
-        styles += '<link rel="stylesheet" href="/'+ assetInfo.name +'">' +"\n"
+        styles += '<link rel="stylesheet" href="/' + assetInfo.name + '">\n'
       }
     })
 

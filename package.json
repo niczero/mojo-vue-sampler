@@ -84,7 +84,7 @@
     "build": "node build/build.js",
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "e2e": "node test/e2e/runner.js",
-    "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
+    "lint": "eslint --ext .js,.vue build src test/unit test/e2e/specs",
     "morbo": "PERL5LIB=dep/lib/perl5 dep/bin/morbo -w src -l 'http://*:8081' bin/sampler &>>log/development.log &",
     "start": "npm run dev",
     "test": "npm run unit && npm run e2e",

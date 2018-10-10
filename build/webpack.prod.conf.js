@@ -10,7 +10,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-const MyPlugin = require('./record-assets-plugin')
+const AssetListerPlugin = require('./record-assets-plugin')
 
 const env = process.env.NODE_ENV === 'testing'
   ? require('./config.test.env')
@@ -53,7 +53,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       // currently set to 'true' because we are seeing that sourcemaps are
       // included in the codesplit bundle as well when it's 'false', increasing
       // file size: https://github.com/vuejs-templates/webpack/issues/1110
-      allChunks: true,
+      allChunks: true
     }),
     // Compress extracted CSS. We are using this plugin so that possible
     // duplicated CSS from different components can be deduped.
@@ -125,7 +125,13 @@ const webpackConfig = merge(baseWebpackConfig, {
       }
     ]),
 
-		new MyPlugin({options: 'nada'})
+    new AssetListerPlugin([{
+			to: 'templates/styles.html.ep',
+			types: ['css']
+		}, {
+			to: 'templates/scripts.html.ep'
+			types: ['js']
+		}])
   ]
 })
 

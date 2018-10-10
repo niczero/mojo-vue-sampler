@@ -1,15 +1,15 @@
-import * as axios from 'axios';
+import * as axios from 'axios'
 
-const BASE_URL = 'http://localhost:8030';
+const BASE_URL = 'http://localhost:8030'
 
 function upload (formData) {
-  const url = `${BASE_URL}/file`;
+  const url = `${BASE_URL}/file`
   return axios.post(url, formData)
-  // get data
+    // get data
     .then(x => x.data)
-  // add url field
+    // add url field
     .then(x => x.map(img => Object.assign({},
-      img, {url: `${BASE_URL}/file/${img.id}`})));
+      img, {url: `${BASE_URL}/file/${img.id}`})))
 }
 
 export { upload }
