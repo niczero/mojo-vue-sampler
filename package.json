@@ -90,5 +90,5 @@
     "test": "npm run unit && npm run e2e",
     "unit": "jest --config test/unit/jest.conf.js --coverage"
   },
-  "version": "0.0.1"
+  "version": "0.1.1"
 }
