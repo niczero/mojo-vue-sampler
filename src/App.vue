@@ -1,6 +1,15 @@
 <template>
   <div id="app">
     <div class="container">
+      <h2>Breadcrumb</h2>
+      <div style="padding: 1rem;">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item"><a href="#">Library</a></li>
+          <li class="breadcrumb-item active">Data</li>
+        </ol>
+      </div>
+
       <!--UPLOAD-->
       <form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
         <h1>Upload images</h1>
@@ -120,6 +129,9 @@ export default {
 </script>
 
 <style lang="scss">
+@import './style/override-bootstrap.scss';
+@import '../node_modules/bootstrap/scss/bootstrap.scss';
+
   body {
     height: 100%;
     .app {
