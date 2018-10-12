@@ -1,5 +1,6 @@
 import Vue from 'vue'
-import Cookies from 'js-cookie'
+// TODO: use cookies to manage UI
+// import Cookies from 'js-cookie'
 import BootstrapVue from 'bootstrap-vue'
 import VeeValidate from 'vee-validate'
 import App from './App.vue'

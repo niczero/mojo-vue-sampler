@@ -1,32 +1,51 @@
-// record-assets-plugin.js
+// asset-partials-webpack-plugin.js
 
-function RecordAssetsPlugin (options) {}
+const toposort = require('toposort')
 
-RecordAssetsPlugin.prototype.apply = function (compiler) {
-//  compiler.plugin('emit', function (compilation, callback) {
-//    compilation.assets['abc'] = {
-//      source: function () {
-//        return 'xyz'
-//      },
-//      size: function () {
-//        return 3
-//      }
-//    }
-//    callback()
-//  })
+function AssetPartialsPlugin (options) {}
+
+AssetPartialsPlugin.prototype.apply = function (compiler) {
 
   compiler.plugin('after-emit', function (compilation, callback) {
     let stats = compilation.getStats().toJson()
+
+    // Record dependency graph
+    let nodes = []
+    let edges = []
+    stats.chunks.forEach(chunk => {
+      nodes.push(chunk.id)
+      chunk.parents.forEach(parent => {
+        edges.push([parent, chunk.id])
+      })
+    })
+    // Sort chunk ids by dependency
+    const sorted = toposort.array(nodes, edges)
+    // Invert into dependency metric
+    let index = {}
+    let len = sorted.length
+    for (let i = 0; i < len; ++i) {
+      index[sorted[i]] = i
+    }
+
     let scripts = ''
     let styles = ''
-
-    stats.assets.forEach(function (assetInfo) {
-      let name = assetInfo.name
+    // Sort assets according to dependencies
+    stats.assets.filter(asset => {
+      // Ignore assets not generated
+      return asset.emitted
+    }).sort((a, b) => {
+      if (!a.chunks || !b.chunks) {
+        return 0
+      }
+      // Use dependency metric
+      return index[a.chunks[0]] - index[b.chunks[0]]
+    }).forEach(asset => {
+      let name = asset.name
       if (name.length >= 3 && name.slice(-3) === '.js') {
-        scripts += '<script src="/' + assetInfo.name + '">\n'
+        scripts += '<script src="/' + name + '"></script>\n'
       }
       else if (name.length >= 4 && name.slice(-4) === '.css') {
-        styles += '<link rel="stylesheet" href="/' + assetInfo.name + '">\n'
+        styles += '<link rel="stylesheet" href="/' + name + '">\n'
       }
     })
 
@@ -35,4 +54,4 @@ RecordAssetsPlugin.prototype.apply = function (compiler) {
   })
 }
 
-module.exports = RecordAssetsPlugin
+module.exports = AssetPartialsPlugin
