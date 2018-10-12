@@ -9,7 +9,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-const AssetListerPlugin = require('./asset-lister-webpack-plugin')
+const AssetPartialsPlugin = require('./asset-partials-webpack-plugin')
 
 const env = process.env.NODE_ENV === 'testing'
   ? require('./config.test.env')
@@ -102,7 +102,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       ignore: ['.*']
 		}]),
 
-    new AssetListerPlugin([{
+    new AssetPartialsPlugin([{
       to: 'templates/styles.html.ep',
       types: ['css']
     }, {
